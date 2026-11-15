@@ -1,0 +1,27 @@
+{
+  "name": "basedloans-agents",
+  "private": true,
+  "description": "Agent tooling for Based Loans: SDK, MCP server, AgentKit provider, skills.",
+  "type": "module",
+  "workspaces": [
+    "packages/sdk",
+    "packages/mcp",
+    "packages/agentkit"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:fork": "npm run test:fork --workspaces --if-present",
+    "sync:assets": "node scripts/sync-assets.mjs ../basedloans/lib/assets.ts packages/sdk/src/assets.generated.ts"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

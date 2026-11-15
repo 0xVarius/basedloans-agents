@@ -1,0 +1,30 @@
+{
+  "name": "@basedloans/agentkit",
+  "version": "0.1.0",
+  "description": "Coinbase AgentKit action provider for Based Loans: borrow USDC against tokens with no liquidations, or lend USDC against tokens you choose.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@basedloans/sdk": "0.1.0",
+    "reflect-metadata": "^0.2.2"
+  },
+  "peerDependencies": {
+    "@coinbase/agentkit": ">=0.10.0",
+    "zod": "^3.23.8",
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "@coinbase/agentkit": "^0.10.4",
+    "zod": "^3.25.0"
+  }
+}

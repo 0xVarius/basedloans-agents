@@ -1,0 +1,43 @@
+{
+  "name": "@basedloans/mcp",
+  "version": "0.1.0",
+  "description": "MCP server for Based Loans on Base: market data, risk reports, loan quotes and unsigned borrow/lend transactions. Holds no keys.",
+  "license": "MIT",
+  "type": "module",
+  "mcpName": "io.github.0xvarius/basedloans",
+  "bin": {
+    "basedloans-mcp": "./dist/stdio.js"
+  },
+  "main": "./dist/server.js",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup src/stdio.ts src/http.ts src/server.ts src/fetch.ts --format esm --dts --clean",
+    "typecheck": "tsc --noEmit",
+    "start:http": "node dist/http.js",
+    "build:vercel": "esbuild deploy/vercel/src/entry.ts --bundle --platform=node --format=esm --target=node22 --outfile=deploy/vercel/api/index.js --banner:js=\"import { createRequire as __cr } from 'node:module'; const require = __cr(import.meta.url);\" --log-level=warning"
+  },
+  "dependencies": {
+    "@basedloans/sdk": "0.1.0",
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^3.25.0"
+  },
+  "peerDependencies": {
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "viem": "^2.21.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.js"
+    },
+    "./fetch": {
+      "types": "./dist/fetch.d.ts",
+      "import": "./dist/fetch.js"
+    }
+  }
+}

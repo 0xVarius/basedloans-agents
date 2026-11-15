@@ -1,0 +1,27 @@
+# Based Loans
+
+> No-liquidation, fixed-term lending on Base (chain 8453). Borrowers deposit a token and get USDC immediately, then buy the token back at a fixed price before the due date, or walk away and keep the USDC. Lenders deposit USDC and choose which tokens they lend against, with a USDC limit per token.
+
+Key facts:
+- No liquidations. Price moves during a loan never trigger a sale.
+- Three loan terms. Durations, buyback costs and the loan fee are set by the protocol and can change; read them live with get_protocol_info.
+- Max loan is a share of collateral value (usually 50%), priced from DEX time-weighted averages and, for some tokens, DIA.
+- Lenders are paid when borrowers buy back; if a borrower walks away, lenders receive the collateral.
+- Lender deposits are held as mUSDC (0.05% fee in, 0.25% out as USDC).
+
+## Agent tools
+
+- [MCP server](https://github.com/0xVarius/basedloans-agents/tree/main/packages/mcp): `npx -y @basedloans/mcp`, or hosted at https://mcp.based.loans/mcp
+- [TypeScript SDK](https://github.com/0xVarius/basedloans-agents/tree/main/packages/sdk): `@basedloans/sdk`
+- [HTTP API](https://mcp.based.loans/v1): GET endpoints, transactions in send_calls shape
+- [Agent skill](https://github.com/0xVarius/basedloans-agents/blob/main/skills/based-loans/SKILL.md)
+
+## Guides
+
+- [How collateral is priced](https://github.com/0xVarius/basedloans-agents/blob/main/docs/collateral-types.md): regular, two-hop, staked/share, and escrowed tokens
+- [Request a token](https://based.loans/list)
+
+## App
+
+- [Borrow](https://based.loans/borrow)
+- [Lend](https://based.loans/lend)

@@ -1,0 +1,42 @@
+{
+  "name": "@basedloans/sdk",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for Based Loans on Base: quotes, risk data and unsigned transactions for borrowing and lending. Never holds keys.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --exclude '**/*.fork.test.ts'",
+    "test:fork": "vitest run src/__tests__/*.fork.test.ts"
+  },
+  "keywords": [
+    "based-loans",
+    "base",
+    "defi",
+    "lending",
+    "agent",
+    "viem"
+  ],
+  "peerDependencies": {
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "viem": "^2.21.0"
+  },
+  "dependencies": {
+    "ox": "^0.14.0"
+  }
+}
