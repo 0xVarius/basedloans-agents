@@ -179,6 +179,23 @@ export function createFetchHandler(opts: ServerOptions = optionsFromEnv()) {
       const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || clientIp
       if (limited(ip)) return json(429, { error: "Too many requests. Slow down and retry in a minute." })
 
+      // A browser (or curl) opening the MCP URL directly: explain instead of returning a protocol error.
+      // MCP clients always POST, or GET with Accept: text/event-stream, so they never land here.
+      if (url.pathname === "/mcp" && request.method === "GET" && !(request.headers.get("accept") ?? "").includes("text/event-stream")) {
+        return json(200, {
+          name: "Based Loans MCP server",
+          about: "This URL is for AI apps that speak the Model Context Protocol (MCP), not for browsers.",
+          connect: {
+            claudeCode: `claude mcp add --transport http basedloans ${url.origin}/mcp`,
+            claudeDesktopOrCursor: { mcpServers: { basedloans: { url: `${url.origin}/mcp` } } },
+            local: "npx -y @basedloans/mcp",
+          },
+          httpApi: `${url.origin}/v1`,
+          docs: "https://docs.based.loans",
+          developerDocs: "https://github.com/0xVarius/basedloans-agents",
+        })
+      }
+
       if (url.pathname === "/mcp") {
         if (Number(request.headers.get("content-length") ?? 0) > 1_000_000) return json(413, { error: "Request too large." })
         // Stateless: a fresh server and transport per request, no sessions to track.
