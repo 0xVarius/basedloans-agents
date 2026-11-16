@@ -12,7 +12,7 @@ Nothing here holds keys. Everything returns live data or unsigned transactions f
 | [`@basedloans/sdk`](packages/sdk) | TypeScript SDK (viem). Markets, risk reports, exact loan quotes, positions, unsigned transaction builders. |
 | [`@basedloans/mcp`](packages/mcp) | MCP server (stdio and Streamable HTTP) plus a GET API for agents that cannot speak MCP. |
 | [`@basedloans/agentkit`](packages/agentkit) | Coinbase AgentKit action provider. |
-| [`skills/based-loans`](skills/based-loans/SKILL.md) | Agent skill (SKILL.md) with borrowing and lending workflows. |
+| [`skills/based-loans`](skills/based-loans/SKILL.md) | Agent skill (SKILL.md) with borrowing and lending workflows. Its main home, with install steps and a Claude Code plugin, is [0xVarius/basedloans-skill](https://github.com/0xVarius/basedloans-skill). |
 | [`plugins/base-mcp`](plugins/base-mcp/based-loans.md) | Custom plugin spec for Base MCP. |
 | [`integrations/bankr`](integrations/bankr/basedloans/SKILL.md) | Bankr skill (`SKILL.md` + `catalog.json`) for the BankrBot/skills catalog. |
 | [`docs`](docs) | Collateral types guide and `llms.txt`. |
