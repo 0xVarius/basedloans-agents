@@ -3,7 +3,7 @@
   "name": "io.github.0xVarius/basedloans",
   "title": "Based Loans",
   "description": "Borrow USDC against Base tokens with no liquidations, or lend USDC. Quotes, risk data, unsigned txs.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "websiteUrl": "https://based.loans",
   "repository": {
     "url": "https://github.com/0xVarius/basedloans-agents",
@@ -38,6 +38,15 @@
     {
       "type": "streamable-http",
       "url": "https://mcp.based.loans/mcp"
+    }
+  ],
+  "icons": [
+    {
+      "src": "https://docs.based.loans/logo.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "512x512"
+      ]
     }
   ]
 }

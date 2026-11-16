@@ -11,7 +11,7 @@ import { z } from "zod"
 import { COLLATERAL_TYPES_GUIDE, SERVER_INSTRUCTIONS } from "./text.js"
 
 export const SERVER_NAME = "basedloans"
-export const SERVER_VERSION = "0.1.1"
+export const SERVER_VERSION = "0.1.2"
 
 export interface ServerOptions extends BasedLoansOptions {
   /**
@@ -150,7 +150,7 @@ export function createServer(opts: ServerOptions = {}): McpServer {
     "get_borrower_loans",
     "Borrower's loans",
     "Every loan a wallet has opened, with status (active, partially_repaid, repaid, defaulted), buyback remaining and time until due.",
-    { borrower: address },
+    { borrower: address.describe("Borrower wallet address on Base") },
     READ,
     ({ borrower }) => bl.getBorrowerLoans(getAddress(borrower)),
   )
@@ -159,7 +159,7 @@ export function createServer(opts: ServerOptions = {}): McpServer {
     "get_lender_position",
     "Lender position",
     "A lender's deposit, USDC in active loans, USDC available to withdraw, per-token limits, and every loan they funded with any repaid USDC or defaulted collateral they can claim.",
-    { lender: address },
+    { lender: address.describe("Lender wallet address on Base") },
     READ,
     ({ lender }) => bl.getLenderPosition(getAddress(lender)),
   )
@@ -191,8 +191,8 @@ export function createServer(opts: ServerOptions = {}): McpServer {
     "Returns the unsigned transactions to open a loan: an approval (only if needed) then openLoan. Includes the quote and warnings. The user's wallet must sign and send each step in order.",
     {
       asset: assetRef,
-      collateral_amount: amount,
-      loan_amount_usdc: amount.optional(),
+      collateral_amount: amount.describe("Collateral to offer, in token units, e.g. 0.5. It is a maximum: only what the loan needs is taken"),
+      loan_amount_usdc: amount.optional().describe("Loan amount before the fee, in USDC. Omit to borrow the most the collateral allows"),
       term,
       borrower: address.describe("Wallet that will sign; used to skip unneeded approvals and check balances"),
       max_shortfall_bps: z.number().int().min(0).max(10000).optional().describe("Max gap between requested and funded amount in basis points. Omit for the protocol default."),
@@ -214,7 +214,11 @@ export function createServer(opts: ServerOptions = {}): McpServer {
     "build_buyback",
     "Prepare a buyback",
     "Returns the unsigned transactions to pay back a loan and get collateral back: a USDC approval (only if needed) then buyback. Omit payment_usdc to pay the full remaining amount.",
-    { loan_id: loanId, payment_usdc: amount.optional(), borrower: address },
+    {
+      loan_id: loanId,
+      payment_usdc: amount.optional().describe("USDC to pay. Omit to pay everything left and get all collateral back"),
+      borrower: address.describe("Borrower wallet that will sign; must be the wallet that opened the loan"),
+    },
     BUILD,
     ({ loan_id, payment_usdc, borrower }) => bl.buildBuyback({ loanId: loan_id, paymentUsdc: payment_usdc, borrower: getAddress(borrower) }),
     BUILD_META,
@@ -229,7 +233,11 @@ export function createServer(opts: ServerOptions = {}): McpServer {
     "build_deposit",
     "Prepare a lending deposit",
     "Returns the unsigned transactions to deposit USDC for lending, optionally setting per-token lending limits in the same transaction (needed before a first deposit can be lent). Check get_risk_report for each token first.",
-    { amount_usdc: amount, lender: address, limits: limits.optional() },
+    {
+      amount_usdc: amount.describe("USDC to deposit, e.g. 500"),
+      lender: address.describe("Lender wallet that will sign; used to skip unneeded approvals and check balances"),
+      limits: limits.optional().describe("Per-token lending limits to set in the same transaction. A first deposit needs at least one to be lent"),
+    },
     BUILD,
     ({ amount_usdc, lender, limits: l }) =>
       bl.buildDeposit({
@@ -244,7 +252,7 @@ export function createServer(opts: ServerOptions = {}): McpServer {
     "build_set_limits",
     "Prepare per-token lending limits",
     "Returns the unsigned transaction to add, change or remove per-token lending limits. A limit cannot be set below what is already in active loans for that token.",
-    { limits, lender: address },
+    { limits: limits.describe("Tokens and the max USDC to lend against each"), lender: address.describe("Lender wallet that will sign") },
     BUILD,
     ({ limits: l, lender }) =>
       bl.buildSetLimits({ limits: l.map((x) => ({ asset: resolveAsset(bl, x.asset), limitUsdc: x.limit_usdc })), lender: getAddress(lender) }),
@@ -255,7 +263,11 @@ export function createServer(opts: ServerOptions = {}): McpServer {
     "build_withdraw",
     "Prepare a withdrawal",
     'Returns the unsigned transaction to withdraw USDC that is not in active loans. Use "max" for everything available. as_musdc receives vault shares and skips the 0.25% withdrawal fee.',
-    { amount_usdc: z.union([amount, z.literal("max")]), lender: address, as_musdc: z.boolean().optional() },
+    {
+      amount_usdc: z.union([amount, z.literal("max")]).describe('USDC to withdraw, or "max" for everything not in active loans'),
+      lender: address.describe("Lender wallet that will sign"),
+      as_musdc: z.boolean().optional().describe("Receive mUSDC vault shares instead of USDC, skipping the 0.25% withdrawal fee"),
+    },
     BUILD,
     ({ amount_usdc, lender, as_musdc }) => bl.buildWithdraw({ amountUsdc: amount_usdc, lender: getAddress(lender), asMusdc: as_musdc }),
     BUILD_META,
@@ -265,7 +277,10 @@ export function createServer(opts: ServerOptions = {}): McpServer {
     "build_claim_proceeds",
     "Prepare a proceeds claim",
     "Returns the unsigned transaction to claim repaid USDC from loans you funded (mode withdraw) or put it straight back into lending (mode redeploy). Get loan IDs from get_lender_position.",
-    { loan_ids: z.array(loanId).min(1).max(50), mode: z.enum(["withdraw", "redeploy"]).optional() },
+    {
+      loan_ids: z.array(loanId).min(1).max(50).describe("IDs of loans you funded, from get_lender_position (1 to 50)"),
+      mode: z.enum(["withdraw", "redeploy"]).optional().describe("withdraw sends the USDC to your wallet (default); redeploy puts it back into lending"),
+    },
     BUILD,
     ({ loan_ids, mode }) => bl.buildClaimProceeds({ loanIds: loan_ids, mode }),
     BUILD_META,
@@ -275,7 +290,7 @@ export function createServer(opts: ServerOptions = {}): McpServer {
     "build_claim_collateral",
     "Prepare a collateral claim",
     "Returns the unsigned transaction for a lender to claim their share of collateral from loans that passed their due date without a full buyback.",
-    { loan_ids: z.array(loanId).min(1).max(50) },
+    { loan_ids: z.array(loanId).min(1).max(50).describe("IDs of past-due loans you funded, from get_lender_position (1 to 50)") },
     BUILD,
     ({ loan_ids }) => bl.buildClaimCollateral({ loanIds: loan_ids }),
     BUILD_META,
@@ -285,7 +300,7 @@ export function createServer(opts: ServerOptions = {}): McpServer {
     "build_set_auto_redeploy",
     "Prepare auto re-lend setting",
     "Returns the unsigned transaction to turn automatic re-lending of repaid principal on or off.",
-    { enabled: z.boolean() },
+    { enabled: z.boolean().describe("true to re-lend repaid principal automatically, false to keep it available to withdraw") },
     BUILD,
     ({ enabled }) => bl.buildSetAutoRedeploy({ enabled }),
     BUILD_META,
@@ -296,10 +311,10 @@ export function createServer(opts: ServerOptions = {}): McpServer {
     "Simulate a transaction",
     "Dry-runs one prepared transaction from a wallet against the latest block and explains the failure in plain language if it would revert. Steps that depend on an earlier approval only pass after that approval is mined.",
     {
-      to: address,
-      data: z.string().regex(/^0x[0-9a-fA-F]*$/),
-      value: z.string().regex(/^\d+$/).optional(),
-      from: address,
+      to: address.describe("The step's to address, as returned by a build_ tool"),
+      data: z.string().regex(/^0x[0-9a-fA-F]*$/).describe("The step's calldata, as returned by a build_ tool"),
+      value: z.string().regex(/^\d+$/).optional().describe("Native value in wei. Always 0 for Based Loans calls"),
+      from: address.describe("Wallet that would send the transaction"),
     },
     READ,
     ({ to, data, value, from }) =>

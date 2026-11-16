@@ -196,6 +196,16 @@ export function createFetchHandler(opts: ServerOptions = optionsFromEnv()) {
         })
       }
 
+      // This server is stateless and never pushes server-initiated messages, so it offers no
+      // standalone SSE stream. Per the Streamable HTTP spec, answer the stream-opening GET with
+      // 405 instead of holding a connection open (which health checkers record as a timeout).
+      if (url.pathname === "/mcp" && request.method === "GET") {
+        return new Response(JSON.stringify({ jsonrpc: "2.0", error: { code: -32000, message: "Method not allowed: this server does not offer an SSE stream. Use POST." }, id: null }), {
+          status: 405,
+          headers: { "content-type": "application/json", allow: "POST, OPTIONS", ...CORS },
+        })
+      }
+
       if (url.pathname === "/mcp") {
         if (Number(request.headers.get("content-length") ?? 0) > 1_000_000) return json(413, { error: "Request too large." })
         // Stateless: a fresh server and transport per request, no sessions to track.
