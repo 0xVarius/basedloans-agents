@@ -1,9 +1,9 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.0xvarius/basedloans",
+  "name": "io.github.0xVarius/basedloans",
   "title": "Based Loans",
   "description": "Borrow USDC against Base tokens with no liquidations, or lend USDC. Quotes, risk data, unsigned txs.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "websiteUrl": "https://based.loans",
   "repository": {
     "url": "https://github.com/0xVarius/basedloans-agents",
@@ -14,15 +14,30 @@
     {
       "registryType": "npm",
       "identifier": "@basedloans/mcp",
-      "version": "0.1.0",
-      "transport": { "type": "stdio" },
+      "version": "0.1.1",
+      "transport": {
+        "type": "stdio"
+      },
       "environmentVariables": [
-        { "name": "BASE_RPC_URL", "description": "Base mainnet RPC URL. Defaults to the public endpoint.", "isRequired": false, "isSecret": true },
-        { "name": "BASEDLOANS_READ_ONLY", "description": "Set to 1 to expose only read tools.", "isRequired": false, "isSecret": false }
+        {
+          "name": "BASE_RPC_URL",
+          "description": "Base mainnet RPC URL. Defaults to the public endpoint.",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "BASEDLOANS_READ_ONLY",
+          "description": "Set to 1 to expose only read tools.",
+          "isRequired": false,
+          "isSecret": false
+        }
       ]
     }
   ],
   "remotes": [
-    { "type": "streamable-http", "url": "https://mcp.based.loans/mcp" }
+    {
+      "type": "streamable-http",
+      "url": "https://mcp.based.loans/mcp"
+    }
   ]
 }

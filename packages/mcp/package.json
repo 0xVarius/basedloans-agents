@@ -1,10 +1,10 @@
 {
   "name": "@basedloans/mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "MCP server for Based Loans on Base: market data, risk reports, loan quotes and unsigned borrow/lend transactions. Holds no keys.",
   "license": "MIT",
   "type": "module",
-  "mcpName": "io.github.0xvarius/basedloans",
+  "mcpName": "io.github.0xVarius/basedloans",
   "bin": {
     "basedloans-mcp": "./dist/stdio.js"
   },
