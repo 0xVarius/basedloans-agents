@@ -14,6 +14,7 @@ Nothing here holds keys. Everything returns live data or unsigned transactions f
 | [`@basedloans/agentkit`](packages/agentkit) | Coinbase AgentKit action provider. |
 | [`skills/based-loans`](skills/based-loans/SKILL.md) | Agent skill (SKILL.md) with borrowing and lending workflows. |
 | [`plugins/base-mcp`](plugins/base-mcp/based-loans.md) | Custom plugin spec for Base MCP. |
+| [`integrations/bankr`](integrations/bankr/basedloans/SKILL.md) | Bankr skill (`SKILL.md` + `catalog.json`) for the BankrBot/skills catalog. |
 | [`docs`](docs) | Collateral types guide and `llms.txt`. |
 
 ## Quick start
