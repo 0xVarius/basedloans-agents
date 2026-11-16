@@ -77,7 +77,9 @@ export function createFetchHandler(opts: ServerOptions = optionsFromEnv()) {
       case "/v1":
         return {
           name: "Based Loans API",
-          docs: "https://based.loans",
+          website: "https://based.loans",
+          docs: "https://docs.based.loans",
+          developerDocs: "https://github.com/0xVarius/basedloans-agents",
           mcp: "/mcp",
           endpoints: [
             "GET /v1/protocol",
@@ -191,7 +193,16 @@ export function createFetchHandler(opts: ServerOptions = optionsFromEnv()) {
 
       if (request.method === "GET" && url.pathname.startsWith("/v1")) return json(200, await api(url))
       if (url.pathname === "/" || url.pathname === "") {
-        return json(200, { name: "Based Loans agent server", mcp: `${url.origin}/mcp`, api: `${url.origin}/v1`, docs: "https://based.loans" })
+        return json(200, {
+          name: "Based Loans agent server",
+          description: "Borrow USDC against Base tokens with no liquidations, or lend USDC. Live quotes, token risk data and unsigned transactions. Holds no keys.",
+          mcp: `${url.origin}/mcp`,
+          api: `${url.origin}/v1`,
+          website: "https://based.loans",
+          docs: "https://docs.based.loans",
+          developerDocs: "https://github.com/0xVarius/basedloans-agents",
+          npm: "https://www.npmjs.com/package/@basedloans/mcp",
+        })
       }
       return json(404, { error: "Not found. MCP is at /mcp, the HTTP API at /v1." })
     } catch (e) {
