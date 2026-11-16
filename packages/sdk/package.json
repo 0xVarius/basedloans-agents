@@ -14,7 +14,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts --clean",
@@ -38,5 +39,17 @@
   },
   "dependencies": {
     "ox": "^0.14.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0xVarius/basedloans-agents.git",
+    "directory": "packages/sdk"
+  },
+  "homepage": "https://github.com/0xVarius/basedloans-agents/tree/main/packages/sdk#readme",
+  "bugs": {
+    "url": "https://github.com/0xVarius/basedloans-agents/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

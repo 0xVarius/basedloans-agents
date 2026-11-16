@@ -11,7 +11,8 @@
   "main": "./dist/server.js",
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup src/stdio.ts src/http.ts src/server.ts src/fetch.ts --format esm --dts --clean",
@@ -39,5 +40,17 @@
       "types": "./dist/fetch.d.ts",
       "import": "./dist/fetch.js"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0xVarius/basedloans-agents.git",
+    "directory": "packages/mcp"
+  },
+  "homepage": "https://github.com/0xVarius/basedloans-agents/tree/main/packages/mcp#readme",
+  "bugs": {
+    "url": "https://github.com/0xVarius/basedloans-agents/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

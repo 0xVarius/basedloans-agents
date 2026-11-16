@@ -8,7 +8,8 @@
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
@@ -26,5 +27,17 @@
   "devDependencies": {
     "@coinbase/agentkit": "^0.10.4",
     "zod": "^3.25.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0xVarius/basedloans-agents.git",
+    "directory": "packages/agentkit"
+  },
+  "homepage": "https://github.com/0xVarius/basedloans-agents/tree/main/packages/agentkit#readme",
+  "bugs": {
+    "url": "https://github.com/0xVarius/basedloans-agents/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
