@@ -1,6 +1,6 @@
 {
   "name": "@basedloans/mcp",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "MCP server for Based Loans on Base: market data, risk reports, loan quotes and unsigned borrow/lend transactions. Holds no keys.",
   "license": "MIT",
   "type": "module",
@@ -21,7 +21,7 @@
     "build:vercel": "esbuild deploy/vercel/src/entry.ts --bundle --platform=node --format=esm --target=node22 --outfile=deploy/vercel/api/index.js --banner:js=\"import { createRequire as __cr } from 'node:module'; const require = __cr(import.meta.url);\" --log-level=warning"
   },
   "dependencies": {
-    "@basedloans/sdk": "0.1.0",
+    "@basedloans/sdk": "0.1.1",
     "@modelcontextprotocol/sdk": "^1.32.2",
     "zod": "^3.25.0"
   },

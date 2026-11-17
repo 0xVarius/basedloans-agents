@@ -11,7 +11,7 @@ import { z } from "zod"
 import { COLLATERAL_TYPES_GUIDE, SERVER_INSTRUCTIONS } from "./text.js"
 
 export const SERVER_NAME = "basedloans"
-export const SERVER_VERSION = "0.1.2"
+export const SERVER_VERSION = "0.1.3"
 
 export interface ServerOptions extends BasedLoansOptions {
   /**
