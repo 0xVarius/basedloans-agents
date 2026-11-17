@@ -1,5 +1,7 @@
 # Based Loans for agents
 
+[![Listed on mcpservers.org](https://mcpservers.org/badge.svg)](https://mcpservers.org/servers/0xvarius/basedloans-agents)
+
 Tools that let AI agents and apps use [Based Loans](https://based.loans), the no-liquidation lending protocol on Base.
 
 - **Borrow:** deposit a token, get USDC now, buy the token back at a fixed price before the due date. Price swings never trigger a sale.
