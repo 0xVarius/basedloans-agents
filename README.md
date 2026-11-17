@@ -1,6 +1,6 @@
 # Based Loans for agents
 
-[![Listed on mcpservers.org](https://mcpservers.org/badge.svg)](https://mcpservers.org/servers/0xvarius/basedloans-agents)
+[![Listed on mcpservers.org](https://mcpservers.org/badge.svg)](https://mcpservers.org/servers/0xvarius/basedloans-agents) [![Based Loans MCP server on MCPRush](https://mcprush.com/badge/based-loans-mcp/card.svg)](https://mcprush.com/to/based-loans-mcp?ref=badge)
 
 Tools that let AI agents and apps use [Based Loans](https://based.loans), the no-liquidation lending protocol on Base.
 
