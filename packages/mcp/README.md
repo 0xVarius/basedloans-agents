@@ -2,6 +2,8 @@
 
 MCP server for [Based Loans](https://based.loans) on Base: market data, token risk reports, exact loan quotes, positions, and unsigned borrow and lend transactions. Holds no keys.
 
+No sign-in and no API key needed. Every setting below is optional.
+
 ## Use it
 
 Claude Desktop, Cursor and other MCP clients:
@@ -11,8 +13,7 @@ Claude Desktop, Cursor and other MCP clients:
   "mcpServers": {
     "basedloans": {
       "command": "npx",
-      "args": ["-y", "@basedloans/mcp"],
-      "env": { "BASE_RPC_URL": "https://your-base-rpc" }
+      "args": ["-y", "@basedloans/mcp"]
     }
   }
 }
@@ -28,7 +29,7 @@ Prepare (return unsigned transactions): `build_borrow`, `build_buyback`, `build_
 
 Every tool is annotated read-only: none of them change anything on-chain. The prepare tools return transactions for the user's wallet to sign.
 
-## Environment
+## Environment (all optional)
 
 | Variable | Meaning |
 |---|---|

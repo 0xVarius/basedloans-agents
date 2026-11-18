@@ -9,7 +9,7 @@ Tools that let AI agents and apps use [Based Loans](https://based.loans), the no
 - **Borrow:** deposit a token, get USDC now, buy the token back at a fixed price before the due date. Price swings never trigger a sale.
 - **Lend:** deposit USDC and choose which tokens to lend against, with a limit per token.
 
-Nothing here holds keys. Everything returns live data or unsigned transactions for the user's own wallet.
+Nothing here holds keys. Everything returns live data or unsigned transactions for the user's own wallet. No sign-in and no API key needed.
 
 | Package | What it is |
 |---|---|
