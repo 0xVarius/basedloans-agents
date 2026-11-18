@@ -1,0 +1,52 @@
+# Publishes @basedloans/mcp to npm and its record to the MCP Registry.
+# No stored secrets: npm uses trusted publishing and the registry uses
+# GitHub OIDC, both tied to this repo and this workflow file.
+#
+# Run it from the Actions tab (Run workflow), or push a tag like mcp-v0.1.5.
+# If the package version in packages/mcp/package.json is already on npm,
+# the npm step is skipped and only the registry record is published.
+
+name: Release MCP server
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "mcp-v*"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+
+      - name: Publish to npm (skipped if this version is already there)
+        working-directory: packages/mcp
+        run: |
+          NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+          if npm view "$NAME@$VERSION" version >/dev/null 2>&1; then
+            echo "$NAME@$VERSION is already on npm, skipping"
+          else
+            npm publish --provenance --access public
+          fi
+
+      - name: Publish to the MCP Registry
+        working-directory: packages/mcp
+        run: |
+          curl -sL "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz" | tar xz mcp-publisher
+          ./mcp-publisher login github-oidc
+          ./mcp-publisher publish
